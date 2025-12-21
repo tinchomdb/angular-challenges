@@ -1,58 +1,25 @@
-import { NgOptimizedImage } from '@angular/common';
-import { Component, inject, input } from '@angular/core';
-import { randStudent, randTeacher } from '../../data-access/fake-http.service';
-import { StudentStore } from '../../data-access/student.store';
-import { TeacherStore } from '../../data-access/teacher.store';
-import { CardType } from '../../model/card.model';
+import { NgTemplateOutlet } from '@angular/common';
+import { Component, contentChild, input, output } from '@angular/core';
 import { ListItemComponent } from '../list-item/list-item.component';
+import { HeaderTemplateDirective } from './headerTemplate.directive';
+import { ItemTemplateDirective } from './itemTemplate.directive';
 
 @Component({
   selector: 'app-card',
-  template: `
-    <div
-      class="flex w-fit flex-col gap-3 rounded-md border-2 border-black p-4"
-      [class]="customClass()">
-      @if (type() === CardType.TEACHER) {
-        <img ngSrc="assets/img/teacher.png" width="200" height="200" />
-      }
-      @if (type() === CardType.STUDENT) {
-        <img ngSrc="assets/img/student.webp" width="200" height="200" />
-      }
-
-      <section>
-        @for (item of list(); track item) {
-          <app-list-item
-            [name]="item.firstName"
-            [id]="item.id"
-            [type]="type()"></app-list-item>
-        }
-      </section>
-
-      <button
-        class="rounded-sm border border-blue-500 bg-blue-300 p-2"
-        (click)="addNewItem()">
-        Add
-      </button>
-    </div>
-  `,
-  imports: [ListItemComponent, NgOptimizedImage],
+  //The goal of the challenge is to create a CardComponent that can be customized without any modifications. Once you’ve created this component, you can begin implementing the CityCardComponent and ensure you are not touching the CardComponent.
+  templateUrl: './card.component.html',
+  imports: [ListItemComponent, NgTemplateOutlet, HeaderTemplateDirective],
 })
 export class CardComponent {
-  private teacherStore = inject(TeacherStore);
-  private studentStore = inject(StudentStore);
-
   readonly list = input<any[] | null>(null);
-  readonly type = input.required<CardType>();
-  readonly customClass = input('');
+  readonly customBackgroundColor = input('');
+  addNewClicked = output();
 
-  CardType = CardType;
+  headerTemplate = contentChild.required(HeaderTemplateDirective);
+
+  listItemTemplate = contentChild.required(ItemTemplateDirective);
 
   addNewItem() {
-    const type = this.type();
-    if (type === CardType.TEACHER) {
-      this.teacherStore.addOne(randTeacher());
-    } else if (type === CardType.STUDENT) {
-      this.studentStore.addOne(randStudent());
-    }
+    this.addNewClicked.emit();
   }
 }
