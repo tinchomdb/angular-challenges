@@ -43,10 +43,17 @@ export class AppComponent {
     /* 
       Explain for your junior team mate why this bug occurs ...
     */
+    let previousCount = 0;
+
     effect(() => {
-      if (this.drive() || this.ram() || this.gpu()) {
+      const currentCount =
+        Number(this.drive()) + Number(this.ram()) + Number(this.gpu());
+
+      if (currentCount > previousCount) {
         alert('Price increased!');
       }
+
+      previousCount = currentCount;
     });
   }
 }
