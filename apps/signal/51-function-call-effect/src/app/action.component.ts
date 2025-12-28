@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   signal,
+  untracked,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from './user.service';
@@ -37,8 +38,14 @@ export class ActionsComponent {
   protected actions = ['Create', 'Read', 'Update', 'Delete'];
 
   constructor() {
-    effect(() => {
+    /* effect(() => {
       this.userService.log(this.action() ?? 'No action selected');
+    }); */
+    effect(() => {
+      this.action();
+      untracked(() =>
+        this.userService.log(this.action() ?? 'No action selected'),
+      );
     });
   }
 }
