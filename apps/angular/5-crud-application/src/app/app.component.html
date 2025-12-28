@@ -1,0 +1,10 @@
+@if (loading()) {
+  <div>Loading</div>
+}
+@for (todo of todos(); track todo.id) {
+  <div>
+    {{ todo.title }}
+    <button (click)="update(todo)">Update</button>
+    <button (click)="delete(todo)">Delete</button>
+  </div>
+}
