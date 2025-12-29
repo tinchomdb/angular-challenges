@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+/* import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { PlaceholderComponent } from './placeholder.component';
@@ -10,3 +10,4 @@ import { TopComponent } from './top.component';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+ */
