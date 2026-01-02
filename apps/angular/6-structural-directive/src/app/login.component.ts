@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ButtonComponent } from './button.component';
 import { InformationComponent } from './information.component';
 import {
@@ -30,33 +30,34 @@ import { UserStore } from './user.store';
 
     <app-information />
 
-    <button app-button class="mt-10" routerLink="enter">
+    <button app-button class="mt-10" routerLink="/enter">
       Enter application
     </button>
   `,
 })
 export class LoginComponent {
   private readonly userStore = inject(UserStore);
+  router = inject(Router);
 
   admin() {
-    this.userStore.add(admin);
+    this.userStore.loginAs(admin);
   }
   manager() {
-    this.userStore.add(manager);
+    this.userStore.loginAs(manager);
   }
   reader() {
-    this.userStore.add(reader);
+    this.userStore.loginAs(reader);
   }
   writer() {
-    this.userStore.add(writer);
+    this.userStore.loginAs(writer);
   }
   readerWriter() {
-    this.userStore.add(readerAndWriter);
+    this.userStore.loginAs(readerAndWriter);
   }
   client() {
-    this.userStore.add(client);
+    this.userStore.loginAs(client);
   }
   everyone() {
-    this.userStore.add(everyone);
+    this.userStore.loginAs(everyone);
   }
 }
