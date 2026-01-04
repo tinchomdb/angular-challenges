@@ -1,0 +1,14 @@
+<div class="form-container">
+  <span>possible values: posts, comments, albums, photos, todos, users</span>
+</div>
+<form class="form-container" (ngSubmit)="submit$.next()">
+  <input
+    type="text"
+    placeholder="Enter text"
+    [(ngModel)]="input"
+    name="action" />
+  <button>Fetch</button>
+</form>
+<div class="response">
+  {{ response | json }}
+</div>
