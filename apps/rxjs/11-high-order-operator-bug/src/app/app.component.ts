@@ -1,40 +1,11 @@
 /* eslint-disable @angular-eslint/component-selector */
-import { Component, inject, input, signal } from '@angular/core';
-import { take } from 'rxjs';
+import { Component, inject } from '@angular/core';
 import { AppService } from './app.service';
-import { TopicType } from './localDB.service';
+import { ButtonDeleteComponent } from './button.component';
 
 @Component({
-  selector: 'button-delete-topic',
-  template: `
-    <button (click)="deleteTopic()"><ng-content /></button>
-    <div>{{ message() }}</div>
-  `,
-})
-export class ButtonDeleteComponent {
-  readonly topic = input.required<TopicType>();
-
-  message = signal('');
-
-  private service = inject(AppService);
-
-  deleteTopic() {
-    this.service
-      .deleteOldTopics(this.topic())
-      .pipe(take(1))
-      .subscribe((result) =>
-        this.message.set(
-          result
-            ? `All ${this.topic()} have been deleted`
-            : `Error: deletion of some ${this.topic()} failed`,
-        ),
-      );
-  }
-}
-
-@Component({
-  imports: [ButtonDeleteComponent],
   selector: 'app-root',
+  imports: [ButtonDeleteComponent],
   template: `
     @for (info of allInfo(); track info.id) {
       <div>{{ info.id }} - {{ info.topic }}</div>
@@ -49,4 +20,18 @@ export class AppComponent {
   private service = inject(AppService);
 
   allInfo = this.service.getAllInfo;
+
+  /* 
+  User Story
+  We need a button for each Topic. When we click on it, we delete all objects with this Topic in our database (Fake DB in our case). Finally, we display All [topic] have been deleted if everything was deleted successfully or Error: deletion of some [topic] failed if some deletions failed
+
+  Constraints
+  We can only pass one object to our DB for deletion at the time. The DB will respond true if the data was successfully deleted and false otherwise.
+
+  Statement
+  The QA team reports a bug. The UI shows All [topic] have been deleted all the time, even if some deletions fail.
+
+  Spot the bug and correct it.
+  
+  */
 }
