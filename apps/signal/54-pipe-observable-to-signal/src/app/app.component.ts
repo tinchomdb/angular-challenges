@@ -1,5 +1,5 @@
 import { TableComponent } from '@angular-challenges/shared/ui';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ProductRowComponent } from './product-row.component';
 import { products } from './product.model';
 
@@ -7,10 +7,10 @@ import { products } from './product.model';
   imports: [TableComponent, ProductRowComponent],
   selector: 'app-root',
   template: `
-    <table [items]="products">
+    <table [items]="products()">
       <ng-template #header>
         <tr>
-          @for (col of displayedColumns; track col) {
+          @for (col of displayedColumns(); track col) {
             <th>{{ col }}</th>
           }
         </tr>
@@ -23,6 +23,6 @@ import { products } from './product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  products = products;
-  displayedColumns = ['name', 'priceA', 'priceB', 'priceC'];
+  products = signal(products);
+  displayedColumns = signal(['name', 'priceA', 'priceB', 'priceC']);
 }
